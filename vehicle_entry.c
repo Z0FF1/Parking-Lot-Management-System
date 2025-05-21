@@ -2,7 +2,7 @@
 #include <string.h>
 #include "vehicle_entry.h"
 
-#define DATA_FILE "C/PBL/vehicle_data.txt"
+#define DATA_FILE "datafiles/vehicle_data.txt"
 
 #include "slot_allocation.h"
 

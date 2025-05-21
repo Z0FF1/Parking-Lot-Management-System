@@ -1,0 +1,4 @@
+admin adminpassword A
+user1 password1 U
+user2 password2 U
+user3 password3 U

@@ -4,7 +4,7 @@
 void show_menu();
 
 int main() {
-    if (!load_users("C/PBL/authentication.txt")) {
+    if (!load_users("C/PBL/datafiles/authentication.txt")) {
         printf("Failed to load user data. Exiting.\n");
         return 1;
     }

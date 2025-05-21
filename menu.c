@@ -4,17 +4,22 @@
 #include "billing_fee.h"
 #include "report_generator.h"
 #include "system_settings.h"
+#include "authentication.h"
 
 void show_menu() {
     int choice;
+    char role;
     do {
-        printf("Main Menu:\n");
+        printf("\n====================================\n");
+        printf("         Parking System Menu         \n");
+        printf("====================================\n");
         printf("1. Vehicle Entry Module\n");
         printf("2. Vehicle Exit Module\n");
         printf("3. Billing & Fee Calculation Module\n");
         printf("4. Report Generator Module\n");
         printf("5. System Settings Module\n");
         printf("6. Exit / Logout Module\n");
+        printf("------------------------------------\n");
         printf("Enter your choice: ");
 
         if (scanf("%d", &choice) != 1) {
@@ -24,6 +29,8 @@ void show_menu() {
             choice = 0;
             continue;
         }
+
+        role = get_logged_in_user_role();
 
         switch (choice) {
             case 1:
@@ -39,7 +46,11 @@ void show_menu() {
                 report_generator();
                 break;
             case 5:
-                system_settings();
+                if (role == 'A') {
+                    system_settings();
+                } else {
+                    printf("Access denied. System Settings are only accessible to admin users.\n");
+                }
                 break;
             case 6:
                 printf("Exiting. Goodbye!\n");
@@ -49,4 +60,3 @@ void show_menu() {
         }
     } while (choice != 6);
 }
-

@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "slot_allocation.h"
 
-#define SLOT_FILE "C/PBL/slot_availability.txt"
+#define SLOT_FILE "C/PBL/datafiles/slot_availability.txt"
 #define MAX_SLOTS 10
 
 // Find the nearest available slot, return slot number or -1 if none available
@@ -14,9 +14,9 @@ int find_nearest_available_slot() {
     }
 
     int slot_no;
-    char status;
-    while (fscanf(fp, "%d %c", &slot_no, &status) != EOF) {
-        if (status == 'A') {
+    int status;
+    while (fscanf(fp, "%d %d", &slot_no, &status) != EOF) {
+        if (status == 0) { // 0 means available
             fclose(fp);
             return slot_no;
         }
@@ -25,7 +25,7 @@ int find_nearest_available_slot() {
     return -1; // no available slot
 }
 
-// Mark a slot as occupied ('N'), return 1 on success, 0 on failure
+// Mark a slot as occupied (1), return 1 on success, 0 on failure
 int mark_slot_occupied(int slot_no) {
     FILE *fp = fopen(SLOT_FILE, "r");
     FILE *temp_fp = fopen("temp_slot.txt", "w");
@@ -37,14 +37,14 @@ int mark_slot_occupied(int slot_no) {
     }
 
     int curr_slot;
-    char status;
+    int status;
     int found = 0;
-    while (fscanf(fp, "%d %c", &curr_slot, &status) != EOF) {
+    while (fscanf(fp, "%d %d", &curr_slot, &status) != EOF) {
         if (curr_slot == slot_no) {
-            fprintf(temp_fp, "%d N\n", curr_slot);
+            fprintf(temp_fp, "%d 1\n", curr_slot); // 1 means occupied
             found = 1;
         } else {
-            fprintf(temp_fp, "%d %c\n", curr_slot, status);
+            fprintf(temp_fp, "%d %d\n", curr_slot, status);
         }
     }
 
@@ -62,7 +62,7 @@ int mark_slot_occupied(int slot_no) {
     return 1;
 }
 
-// Mark a slot as available ('A'), return 1 on success, 0 on failure
+// Mark a slot as available (0), return 1 on success, 0 on failure
 int mark_slot_available(int slot_no) {
     FILE *fp = fopen(SLOT_FILE, "r");
     FILE *temp_fp = fopen("temp_slot.txt", "w");
@@ -74,14 +74,14 @@ int mark_slot_available(int slot_no) {
     }
 
     int curr_slot;
-    char status;
+    int status;
     int found = 0;
-    while (fscanf(fp, "%d %c", &curr_slot, &status) != EOF) {
+    while (fscanf(fp, "%d %d", &curr_slot, &status) != EOF) {
         if (curr_slot == slot_no) {
-            fprintf(temp_fp, "%d A\n", curr_slot);
+            fprintf(temp_fp, "%d 0\n", curr_slot); // 0 means available
             found = 1;
         } else {
-            fprintf(temp_fp, "%d %c\n", curr_slot, status);
+            fprintf(temp_fp, "%d %d\n", curr_slot, status);
         }
     }
 

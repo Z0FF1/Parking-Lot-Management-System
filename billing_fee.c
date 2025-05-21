@@ -2,8 +2,9 @@
 #include <string.h>
 #include <math.h>
 #include "billing_fee.h"
+#include "system_settings.h"
 
-#define DATA_FILE "C/PBL/vehicle_data.txt"
+#define DATA_FILE "datafiles/vehicle_data.txt"
 
 struct VehicleRecord {
     char reg_no[20];
@@ -63,7 +64,7 @@ void billing_fee() {
                 fclose(fp);
                 return;
             }
-            int rate_per_hour = 50; // example rate
+            int rate_per_hour = (int)get_hourly_rate();
             int total_fee = hours * rate_per_hour;
             printf("Parking duration: %d hour(s)\n", hours);
             printf("Total fee: %d\n", total_fee);
